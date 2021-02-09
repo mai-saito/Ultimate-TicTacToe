@@ -1,0 +1,172 @@
+@charset "utf-8";
+
+/*** General ***/
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 62.5%;
+}
+
+li {
+	list-style: none;
+}
+
+button {
+	margin: 0;
+	display: block;
+}
+
+body {
+	font: 1.6rem "KosugiMaru","Kosugi", "Roboto", "sans-serif";
+}
+
+#wrapper {
+	width: 100vw;
+	height: 100vh;
+}
+
+/*** Header ***/
+
+header {
+	width: 100vw;
+	padding: 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+header h1 {
+	font-family: "Roboto", "sans-serif";
+}
+
+header ul {
+	display: flex;
+}
+
+header ul li {
+	margin-right: 1rem;
+	display: none;
+	cursor: pointer;
+}
+
+header ul li:last-child {
+	margin-right: 0;
+}
+
+header ul li:hover {
+	color: rgb(65, 174, 225);
+}
+
+/*** Main ***/
+
+main {
+	width: fit-content;
+	margin: 0 auto;
+	padding-top: 100px;
+	display: block;
+}
+
+main .box {
+	width: 50px;
+	height: 50px;
+	margin: 1px;
+	padding: 5px;
+	color: white;
+	font-weight: bold;
+	border: 1px solid rgb(128, 128, 128);
+	cursor: pointer;
+	font: 3rem;
+}
+
+main .box:hover {
+	background-color: rgb(128, 128, 128);
+}
+
+.boxRow {
+	height: 154px;
+}
+
+.block {
+	width: 166px;
+	height: 164px;
+	display: flex;
+	border: 5px solid white;
+}
+
+.block p {
+	width: fit-content;
+	margin: auto auto;
+	color: white;
+	font-size: 100px;
+}
+
+.row {
+	display: flex;
+}
+
+.active {
+	display: flex;
+	border: 5px solid rgb(65, 174, 225);
+}
+
+.active-all {
+	display: flex;
+}
+
+/*** Modal ***/
+
+.modal {
+	display: none;
+	position: fixed;
+	/* z-index: 1; */
+	/* padding-top: 30%; */
+	width: 100vw;
+	height: 100vh;
+	left: 0;
+	top: 0;
+	background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+	width: 80%;
+	margin: 80px;
+	padding: 20px;
+	border: 1px solid rgb(128, 128, 128);
+	background-color: rgb(254, 254, 254);
+}
+
+.modal-content h1 {
+	margin-bottom: 15px;
+}
+
+.modal-content p {
+	margin-bottom: 15px;
+}
+
+.button {
+	padding: 10px;
+	border-radius: 5px;
+	border: none;
+	color: white;
+	background-color: rgb(65, 174, 225);
+	text-align: center;
+	font-family: "Kosugi", "sans-serif";
+	cursor: pointer;
+}
+
+#welcome-modal .button {
+	font-size: 2.5rem
+}
+
+.close {
+	float: right;
+	cursor: pointer;
+}
+
+.close:hover {
+	color: rgb(247, 77, 77)
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>JS Project</title>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Kosugi&family=Kosugi+Maru&family=Roboto&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div id="wrapper">
+		<header>
+			<h1 id="title"></h1>
+			<nav>
+				<ul>
+					<li class="fade-in" id="start">はじめる</li>
+					<li>もういちど</li>
+					<li class="fade-in" id="description">あそびかた</li>
+					<li class="fade-in">せってい</li>
+				</ul>
+			</nav>
+		</header>
+		<main>
+			<section id="container">
+			</section>
+			<section id="score-board"></section>
+			<div class="modal" id="welcome-modal">
+				<div class="modal-content">
+					<span class="close" id="close-welcome">&times;</span>
+					<input type="button" id="start" class="button" value="スタート">
+					<input type="button" id="description" class="button" value="あそびかた">
+				</div>
+			</div>
+			<div class="modal" id="description-modal">
+				<div class="modal-content">
+					<span class="close" id="close-description">&times;</span>
+					<h1>あそびかた</h1>
+					<p>ひとことでいうと、「大きなまるばつゲーム」のひとマスが「小さなまるばつゲーム」になってるよ！</p>
+					<p>１．まずは好きなところをえらんでね。</p>
+					<p>２．次は、青いエリアからえらんでね。<br>
+						「小さなまるばつゲーム」で相手がえらんだところが「大きなまるばつゲーム」の青いエリアになるよ。</p>
+					<p>３．「小さなまるばつゲーム」で勝つとエリアをゲット！</p>
+					<p>４．エリアを広げて、「大きなまるばつゲーム」を完成させよう！</p>
+				</div>
+			</div>
+			<div class="modal" id="setting-modal">
+				<div class="modal-content">
+					<span class="close" id="close-setting">&times;</span>
+					<h1>せってい</h1>
+					<p>プレイヤーをえらんでください</p>
+					<input type="button" id="npc" class="button player" value="ＮＰＣとたたかう">
+					<input type="button" id="player2" class="button player" value="ともだちとたたかう">
+				</div>
+			</div>
+		</main>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="script.js"></script>
+</body>
+</html>
