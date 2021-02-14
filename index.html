@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>JS Project</title>
+	<title>Ultimate TicTacToe</title>
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Kosugi&family=Kosugi+Maru&family=Roboto&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="styles.css">
@@ -28,20 +28,30 @@
 			<div class="modal" id="welcome-modal">
 				<div class="modal-content">
 					<span class="close" id="close-welcome">&times;</span>
-					<input type="button" id="start" class="button" value="スタート">
-					<input type="button" id="description" class="button" value="あそびかた">
+					<div class="button-container">
+						<input type="button" id="start" class="button" value="スタート">
+						<input type="button" id="description" class="button" value="あそびかた">
+					</div>
 				</div>
 			</div>
 			<div class="modal" id="description-modal">
 				<div class="modal-content">
 					<span class="close" id="close-description">&times;</span>
 					<h1>あそびかた</h1>
-					<p>ひとことでいうと、「大きなまるばつゲーム」のひとマスが「小さなまるばつゲーム」になってるよ！</p>
+					<p>
+						まるばつゲームが、たて３ブロック×よこ３ブロックの９ゲームあるよ！<br>
+						それぞれのゲームを戦いながら、ブロックを３つゲットしてゲームに勝とう！
+					</p>
 					<p>１．まずは好きなところをえらんでね。</p>
-					<p>２．次は、青いエリアからえらんでね。<br>
-						「小さなまるばつゲーム」で相手がえらんだところが「大きなまるばつゲーム」の青いエリアになるよ。</p>
-					<p>３．「小さなまるばつゲーム」で勝つとエリアをゲット！</p>
-					<p>４．エリアを広げて、「大きなまるばつゲーム」を完成させよう！</p>
+					<p>
+						２．次は、みずいろのブロックの中からえらんでね。<br>
+						<span>
+							・次のターンの指定ブロックは、相手がえらんだマスと同じ位置にあるブロックになるよ。<br>
+							・すでにゲットされているブロックが指定された場合、次ターンは好きな場所をえらんでOK!（この場合はみずいろのブロックはなくなるよ）
+						</span>
+					</p>
+					<p>３．ブロック内のまるばつゲームで勝つと、そのブロックをゲット！</p>
+					<p>４．たて・よこ・ななめに３つのブロックを並べるとゲーム勝利！</p>
 				</div>
 			</div>
 			<div class="modal" id="setting-modal">
@@ -51,6 +61,14 @@
 					<p>プレイヤーをえらんでください</p>
 					<input type="button" id="npc" class="button player" value="ＮＰＣとたたかう">
 					<input type="button" id="player2" class="button player" value="ともだちとたたかう">
+				</div>
+			</div>
+			<div class="modal" id="gameover-modal">
+				<div class="modal-content">
+					<span class="close" id="close-gameover">&times;</span>
+					<p id="winner-msg"></p>
+					<input type="button" id="restart" class="button" value="やりなおす">
+					<input type="button" id="description" class="button" value="あそびかた">
 				</div>
 			</div>
 		</main>

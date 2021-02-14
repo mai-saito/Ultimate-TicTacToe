@@ -8,6 +8,8 @@ const container = document.querySelector('#container');
 const welcome = document.querySelector('#welcome-modal');
 const description = document.querySelector('#description-modal');
 const setting = document.querySelector('#setting-modal');
+const gameover = document.querySelector('#gameover-modal');
+const winnerMessage = document.querySelector('#winner-msg');
 const close = document.querySelectorAll('.close');
 const playerbuttons = document.querySelectorAll('.player');
 
@@ -122,9 +124,9 @@ function clicked(box) {
 		box.style.backgroundColor = 'red';
 		box.innerText = 'X';
 	}
-	winningMove(box, blocks)
+	winningMove(box, blocks);
 	selectBlocks(box.id, blocks);
-	disableBox(blocks)
+	disableBox(blocks);
 	flag = !flag;
 }
 
@@ -223,7 +225,22 @@ function disableBlock(selectedBlock) {
 	}
 	blockCnt++;
 }
+/*****
+	Draw for small TTT
+*****/
 
+function draw(selectedBlock) {
+	selectedBlock.querySelectorAll('.boxRow').forEach(function (boxRow) {
+		boxRow.querySelectorAll('.box').forEach(function (box) {
+		if (box.innerText != '') {
+			selectedBlock.style.zIndex = 1000;
+			selectedBlock.style.backgroundColor = 'yellow';
+			selectedBlock.innerHTML = '<p>-</p>';
+			disableBlock(selectedBlock);
+		} 
+	});
+});
+}
 /*****
 	Winning validation for small TTT
 *****/
@@ -258,28 +275,38 @@ function winningMove(box, blocks) {
 		return selected[0];
 	}).toString();
 
+	console.log(player1Array)
+
 	let player2Array = array.filter(function (selected) {
 		return selected[1] == 'X';
 	}).map(function (selected) {
 		return selected[0];
 	}).toString();
 
+	console.log(player2Array)
 
 	conditions.forEach(function (condition) {
-		if (player1Array == condition) {
+		if (player1Array.includes(condition.toString())) {
 			selectedBlock.style.zIndex = 1000;
 			selectedBlock.style.backgroundColor = 'blue';
 			selectedBlock.innerHTML = '<p>◯</p>';
 			disableBlock(selectedBlock);
 		}
 
-		if (player2Array == condition) {
+		if (player2Array.includes(condition.toString())) {
 			selectedBlock.style.zIndex = 1000;
 			selectedBlock.style.backgroundColor = 'red';
 			selectedBlock.innerHTML = '<p>X</p>';
 			disableBlock(selectedBlock);
 		}
+
+		if (array.length == 9 && (!player1Array.includes(condition.toString()) || !player2Array.includes(condition.toString()))) {
+			draw(selectedBlock)
+		}
 	});
+
+	console.log(array)
+
 
 	if (blockCnt >= 3) {
 		winTheGame(blocks);
@@ -320,15 +347,18 @@ function winTheGame(blocks) {
 		console.log(condition)
 		console.log(player1Array)
 		console.log(player2Array)
-		if (player1Array == condition.toString()) {
-			console.log('1won')
-			alert('player1 Won!');
-			restart();	
+		if (player1Array == condition.toString() || player1Array.includes(condition.toString())) {
+			alert('プレイヤー１の勝ち！')
+			setTimeout(function() {
+				restart();
+			}, 2000);	
 		} 
 
-		if (player2Array == condition.toString) {
-			alert('player12 Won!');
-			restart();
+		if (player2Array == condition.toString() || player2Array.includes(condition.toString())) {
+			alert('プレイヤー２の勝ち！')
+			setTimeout(function() {
+				restart();
+			}, 2000);
 		}
 	});
 }
