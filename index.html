@@ -15,16 +15,15 @@
 			<nav>
 				<ul>
 					<li class="fade-in" id="start">はじめる</li>
-					<li>もういちど</li>
+					<li id="restart">もういちど</li>
 					<li class="fade-in" id="description">あそびかた</li>
 					<li class="fade-in">せってい</li>
 				</ul>
 			</nav>
 		</header>
 		<main>
-			<section id="container">
-			</section>
-			<section id="score-board"></section>
+			<section id="player-board"></section>
+			<section id="container"></section>
 			<div class="modal" id="welcome-modal">
 				<div class="modal-content">
 					<span class="close" id="close-welcome">&times;</span>
@@ -59,8 +58,8 @@
 					<span class="close" id="close-setting">&times;</span>
 					<h1>せってい</h1>
 					<p>プレイヤーをえらんでください</p>
-					<input type="button" id="npc" class="button player" value="ＮＰＣとたたかう">
-					<input type="button" id="player2" class="button player" value="ともだちとたたかう">
+					<input type="button" name="player" class="button player" value="ともだちとたたかう">
+					<input type="button" name="npc" class="button player" value="ＮＰＣとたたかう">
 				</div>
 			</div>
 			<div class="modal" id="gameover-modal">
@@ -68,7 +67,6 @@
 					<span class="close" id="close-gameover">&times;</span>
 					<p id="winner-msg"></p>
 					<input type="button" id="restart" class="button" value="やりなおす">
-					<input type="button" id="description" class="button" value="あそびかた">
 				</div>
 			</div>
 		</main>

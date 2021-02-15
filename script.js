@@ -1,10 +1,11 @@
 const text = "Ultimate TicTacToe";
 const title = document.querySelector('#title');
 const startButtons = document.querySelectorAll('#start');
-const resetButton = document.querySelector('nav ul li:nth-child(2)');
+const restartButtons = document.querySelectorAll('#restart');
 const descriptionButtons = document.querySelectorAll('#description');
 const settingButton = document.querySelector('nav ul li:last-child');
 const container = document.querySelector('#container');
+const playerBoard = document.querySelector('#player-board');
 const welcome = document.querySelector('#welcome-modal');
 const description = document.querySelector('#description-modal');
 const setting = document.querySelector('#setting-modal');
@@ -18,7 +19,7 @@ let n = 0;
 let n2 = 0;
 let n3 = 0;
 let blockCnt = 0;
-let player2 = 0; // Default vs NPC
+let player2 = 0; // vs NPC => player2 = 1;
 let flag = true;
 let box;
 
@@ -53,19 +54,25 @@ startButtons.forEach(function(startButton) {
 function start() {
 	init();
 	startButtons[0].style.display = 'none';
-	resetButton.style.display = 'block';
+	restartButtons[0].style.display = 'block';
 	welcome.style.display = 'none';
 }
 
 /***** 
 	Restart the game
 *****/
-resetButton.addEventListener('click', restart);
+restartButtons.forEach(function(restartButton) {
+	restartButton.addEventListener('click', restart);
+});
 
 function restart() {
+	if (gameover.style.display == 'block') {
+		gameover.style.display = 'none';
+	}
 	container.innerHTML = ''
 	n = 0;
 	n2 = 0;
+	blockCnt = 0;
 	flag = true;
 	init();
 }
@@ -109,6 +116,7 @@ function init() {
 		}
 		container.appendChild(row);
 	}
+	whoseTurn();
 }
 
 /***** 
@@ -117,17 +125,98 @@ function init() {
 function clicked(box) {
 	const blocks = document.querySelectorAll('.block');
 
-	if (flag) {
-		box.style.backgroundColor = 'blue';
-		box.innerText = '◯';
-	} else {
-		box.style.backgroundColor = 'red';
-		box.innerText = 'X';
+	// vs other player
+	if (player2 == 0) {
+		if (flag) {
+			box.style.backgroundColor = 'blue';
+			box.innerText = '◯';
+		} else {
+			box.style.backgroundColor = 'red';
+			box.innerText = 'X';
+		}
+		winningMove(box, blocks);
+		selectBlocks(box.id, blocks);
+		disableBox(blocks);
+		flag = !flag;
+		whoseTurn();
 	}
-	winningMove(box, blocks);
-	selectBlocks(box.id, blocks);
-	disableBox(blocks);
-	flag = !flag;
+
+	// NPC
+	if (player2 == 1) {
+		if (flag) {
+			console.log(flag)
+			box.style.backgroundColor = 'blue';
+			box.innerText = '◯';
+			winningMove(box, blocks);
+			selectBlocks(box.id, blocks);
+			disableBox(blocks);
+			flag = !flag;
+			whoseTurn()
+			setTimeout(function() {
+				console.log(flag)
+				npc(box, blocks)
+				flag = !flag;
+				whoseTurn()
+			}, 1000);
+		}
+	}
+}
+
+/***** 
+	NPC
+*****/
+
+function npc(box, blocks) {
+	let activeBlock = document.querySelector('.active');
+	let npc;
+
+	if (activeBlock) {
+		do {
+			let move = Math.floor(Math.random() * 9);
+			console.log(move)
+			npc = activeBlock.querySelectorAll('.boxRow .box');
+			npc = npc[move]
+			console.log(npc)
+			if (npc.innerText == '') {
+				break;
+			} else {
+				console.log(move)
+				console.log('loop again')
+			}
+		} while (1);
+	}
+
+	if (!activeBlock) {
+		let block;
+		console.log('called')
+		do{
+			block = blocks[Math.floor(Math.random() * 9)];
+			if (block.style.backgroundColor == '') {
+				console.log('block okay ' + block)
+				break;
+			} else {
+				console.log('block loop again')
+			}
+		} while(1);
+
+		do{
+			npc = block.querySelectorAll('.boxRow .box');
+			npc = npc[Math.floor(Math.random() * 9)];
+			if (npc.innerText == '') {
+				console.log(npc)
+				break;
+			} else {
+				console.log('loop again')
+			}
+		} while(1);
+
+	}
+		console.log('okay')
+		npc.style.backgroundColor = 'red';
+		npc.innerText = 'X';
+		winningMove(npc, blocks);
+		selectBlocks(npc.id, blocks);
+		disableBox(blocks);
 }
 
 /***** 
@@ -225,10 +314,10 @@ function disableBlock(selectedBlock) {
 	}
 	blockCnt++;
 }
+
 /*****
 	Draw for small TTT
 *****/
-
 function draw(selectedBlock) {
 	selectedBlock.querySelectorAll('.boxRow').forEach(function (boxRow) {
 		boxRow.querySelectorAll('.box').forEach(function (box) {
@@ -241,6 +330,7 @@ function draw(selectedBlock) {
 	});
 });
 }
+
 /*****
 	Winning validation for small TTT
 *****/
@@ -305,9 +395,6 @@ function winningMove(box, blocks) {
 		}
 	});
 
-	console.log(array)
-
-
 	if (blockCnt >= 3) {
 		winTheGame(blocks);
 	}
@@ -343,28 +430,28 @@ function winTheGame(blocks) {
 	});
 
 	conditions.forEach(function(condition) {
-		console.log('here')
-		console.log(condition)
-		console.log(player1Array)
-		console.log(player2Array)
+		// console.log('here')
+		// console.log(condition)
+		// console.log(player1Array)
+		// console.log(player2Array)
 		if (player1Array == condition.toString() || player1Array.includes(condition.toString())) {
-			alert('プレイヤー１の勝ち！')
-			setTimeout(function() {
-				restart();
-			}, 2000);	
+			console.log('1win')
+			gameover.style.display = 'block';
+			gameover.style.zIndex = 9999;
+			winnerMessage.innerHTML = 'プレイヤー１の勝ち！'
 		} 
 
 		if (player2Array == condition.toString() || player2Array.includes(condition.toString())) {
-			alert('プレイヤー２の勝ち！')
-			setTimeout(function() {
-				restart();
-			}, 2000);
+			console.log('2win')
+			gameover.style.display = 'block';
+			gameover.style.zIndex = 9999;
+			winnerMessage.innerHTML = 'プレイヤー２の勝ち！'
 		}
 	});
 }
 
 /***** 
-	Modal handling 
+	Modal and other contents
 *****/
 
 descriptionButtons.forEach(function(descriptionButton) {
@@ -383,12 +470,12 @@ settingButton.onclick = function () {
 // Select player in setting
 playerbuttons.forEach(function (button) {
 	button.onclick = function (event) {
-		if (event.target.id == 'npc') {
-			player2 = 0; //NPC
+		if (event.target.name == 'player') {
+			player2 = 0; // vs other player
 		}
 
-		if (event.target.id == 'player2') {
-			player2 = 1; //VS other player
+		if (event.target.name == 'npc') {
+			player2 = 1; // NPC
 		}
 		setting.style.display = 'none';
 	}
@@ -421,5 +508,13 @@ window.onclick = function (event) {
 
 	if (event.target == setting) {
 		setting.style.display = 'none';
+	}
+}
+
+function whoseTurn() {
+	if (flag == true) {
+		playerBoard.innerHTML = '<p><span style="color: blue;">&#9711;</span>のターン</p>'
+	} else if (flag == false) {
+		playerBoard.innerHTML = '<p><span style="color: red;">&times;</span>のターン</p>'
 	}
 }
