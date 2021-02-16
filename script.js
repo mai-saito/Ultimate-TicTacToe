@@ -481,6 +481,11 @@ playerbuttons.forEach(function (button) {
 			player2 = 0; // vs other player
 		}
 
+		if (event.target.name == 'player-restart') {
+			player2 = 0; // vs other player
+			restart();
+		}
+
 		if (event.target.name == 'npc') {
 			player2 = 1; // NPC
 		}
