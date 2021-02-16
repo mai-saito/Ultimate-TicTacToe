@@ -13,13 +13,17 @@ const gameover = document.querySelector('#gameover-modal');
 const winnerMessage = document.querySelector('#winner-msg');
 const close = document.querySelectorAll('.close');
 const playerbuttons = document.querySelectorAll('.player');
+const menu = document.querySelector('#nav-links');
+const icon = document.querySelector('#nav-icon');
+const blue = 'rgb(65, 94, 225)';
+const red = 'rgb(225, 65, 94)';
 
 let index = 0;
 let n = 0;
 let n2 = 0;
 let n3 = 0;
 let blockCnt = 0;
-let player2 = 0; // vs NPC => player2 = 1;
+let player2 = 1; // 0: 2 players, 1: NPC(Default)
 let flag = true;
 let box;
 
@@ -128,12 +132,16 @@ function clicked(box) {
 	// vs other player
 	if (player2 == 0) {
 		if (flag) {
-			box.style.backgroundColor = 'blue';
+			box.style.backgroundColor = blue;
 			box.innerText = '◯';
 		} else {
-			box.style.backgroundColor = 'red';
+			box.style.backgroundColor = red;
 			box.innerText = 'X';
 		}
+		box.style.border = '3px solid rgb(65, 174, 225)';
+		setTimeout(function() {
+			box.style.border = 'inherit';
+		}, 1000);
 		winningMove(box, blocks);
 		selectBlocks(box.id, blocks);
 		disableBox(blocks);
@@ -144,8 +152,7 @@ function clicked(box) {
 	// NPC
 	if (player2 == 1) {
 		if (flag) {
-			console.log(flag)
-			box.style.backgroundColor = 'blue';
+			box.style.backgroundColor = blue;
 			box.innerText = '◯';
 			winningMove(box, blocks);
 			selectBlocks(box.id, blocks);
@@ -153,10 +160,9 @@ function clicked(box) {
 			flag = !flag;
 			whoseTurn()
 			setTimeout(function() {
-				console.log(flag)
-				npc(box, blocks)
+				npc(blocks);
 				flag = !flag;
-				whoseTurn()
+				whoseTurn();
 			}, 1000);
 		}
 	}
@@ -166,36 +172,26 @@ function clicked(box) {
 	NPC
 *****/
 
-function npc(box, blocks) {
+function npc(blocks) {
 	let activeBlock = document.querySelector('.active');
+  let activeBlocks = document.querySelectorAll('.active-all');
 	let npc;
 
 	if (activeBlock) {
 		do {
 			let move = Math.floor(Math.random() * 9);
-			console.log(move)
 			npc = activeBlock.querySelectorAll('.boxRow .box');
 			npc = npc[move]
-			console.log(npc)
 			if (npc.innerText == '') {
 				break;
-			} else {
-				console.log(move)
-				console.log('loop again')
 			}
 		} while (1);
-	}
-
-	if (!activeBlock) {
+	} else if (activeBlocks) {
 		let block;
-		console.log('called')
 		do{
-			block = blocks[Math.floor(Math.random() * 9)];
+			block = activeBlocks[Math.floor(Math.random() * 9)];
 			if (block.style.backgroundColor == '') {
-				console.log('block okay ' + block)
 				break;
-			} else {
-				console.log('block loop again')
 			}
 		} while(1);
 
@@ -203,16 +199,12 @@ function npc(box, blocks) {
 			npc = block.querySelectorAll('.boxRow .box');
 			npc = npc[Math.floor(Math.random() * 9)];
 			if (npc.innerText == '') {
-				console.log(npc)
 				break;
-			} else {
-				console.log('loop again')
 			}
 		} while(1);
 
 	}
-		console.log('okay')
-		npc.style.backgroundColor = 'red';
+		npc.style.backgroundColor = red;
 		npc.innerText = 'X';
 		winningMove(npc, blocks);
 		selectBlocks(npc.id, blocks);
@@ -308,7 +300,7 @@ function disableBlock(selectedBlock) {
 		selectedBlock.querySelectorAll('.boxRow').forEach(function (boxRow) {
 			boxRow.querySelectorAll('.box').forEach(function (box) {
 				box.disabled = true;
-				box.style.backgroundColor = 'inherit'
+				box.style.backgroundColor = 'inherit';
 			});
 		});
 	}
@@ -365,36 +357,42 @@ function winningMove(box, blocks) {
 		return selected[0];
 	}).toString();
 
-	console.log(player1Array)
-
 	let player2Array = array.filter(function (selected) {
 		return selected[1] == 'X';
 	}).map(function (selected) {
 		return selected[0];
 	}).toString();
 
-	console.log(player2Array)
-
+	// Check if conditions are included in the arrays
 	conditions.forEach(function (condition) {
-		if (player1Array.includes(condition.toString())) {
+	  if (condition.every(function(i) {
+			if(player1Array.includes(i)) {
+				return true;
+			}
+		})) {
 			selectedBlock.style.zIndex = 1000;
-			selectedBlock.style.backgroundColor = 'blue';
+			selectedBlock.style.backgroundColor = blue;
 			selectedBlock.innerHTML = '<p>◯</p>';
 			disableBlock(selectedBlock);
 		}
 
-		if (player2Array.includes(condition.toString())) {
+	  if (condition.every(function(i) {
+			if(player2Array.includes(i)) {
+				return true;
+			}
+		})) {
 			selectedBlock.style.zIndex = 1000;
-			selectedBlock.style.backgroundColor = 'red';
+			selectedBlock.style.backgroundColor = red;
 			selectedBlock.innerHTML = '<p>X</p>';
 			disableBlock(selectedBlock);
 		}
 
 		if (array.length == 9 && (!player1Array.includes(condition.toString()) || !player2Array.includes(condition.toString()))) {
-			draw(selectedBlock)
+			draw(selectedBlock);
 		}
 	});
 
+	// Execute once 3 blocks are taken
 	if (blockCnt >= 3) {
 		winTheGame(blocks);
 	}
@@ -418,36 +416,45 @@ function winTheGame(blocks) {
 	];
 
 	blocks.forEach(function(block) {
-		if (block.style.backgroundColor == 'blue') {
+		if (block.style.backgroundColor == blue) {
 			player1Array.push(block.id);
 			player1Array.toString();
 		}
 
-		if (block.style.backgroundColor == 'red') {
+		if (block.style.backgroundColor == red) {
 			player2Array.push(block.id);
 			player2Array.toString();
 		}
 	});
 
 	conditions.forEach(function(condition) {
-		// console.log('here')
-		// console.log(condition)
-		// console.log(player1Array)
-		// console.log(player2Array)
-		if (player1Array == condition.toString() || player1Array.includes(condition.toString())) {
-			console.log('1win')
+		if (condition.every(function(i) {
+			if (player1Array.includes(i)) {
+				return true;
+			}
+		})) {
 			gameover.style.display = 'block';
 			gameover.style.zIndex = 9999;
-			winnerMessage.innerHTML = 'プレイヤー１の勝ち！'
-		} 
+			winnerMessage.innerHTML = 'プレイヤー１の勝ち！';
+		}
 
-		if (player2Array == condition.toString() || player2Array.includes(condition.toString())) {
-			console.log('2win')
+		if (condition.every(function(i) {
+			if (player2Array.includes(i)) {
+				return true;
+			}
+		})) {
 			gameover.style.display = 'block';
 			gameover.style.zIndex = 9999;
-			winnerMessage.innerHTML = 'プレイヤー２の勝ち！'
+			winnerMessage.innerHTML = 'プレイヤー２の勝ち！';
+		}
+
+		if (player1Array.length + player2Array.length == 9 && (!player1Array.includes(condition.toString()) || !player2Array.includes(condition.toString()))) {
+			gameover.style.display = 'block';
+			gameover.style.zIndex = 9999;
+			winnerMessage.innerHTML = 'ひきわけ';
 		}
 	});
+
 }
 
 /***** 
@@ -494,6 +501,11 @@ close.forEach(function (close) {
 		if (event.target.id == 'close-setting') {
 			setting.style.display = 'none';
 		}
+
+		if (event.target.id == 'close-gameover') {
+			gameover.style.display = 'none';
+			restart();
+		}
 	}
 });
 
@@ -509,12 +521,27 @@ window.onclick = function (event) {
 	if (event.target == setting) {
 		setting.style.display = 'none';
 	}
+
+	if (event.target == gameover) {
+		gameover.style.display = 'none';
+		restart();
+	}
 }
 
 function whoseTurn() {
 	if (flag == true) {
-		playerBoard.innerHTML = '<p><span style="color: blue;">&#9711;</span>のターン</p>'
+		playerBoard.innerHTML = '<p><span style="color: rgb(65, 94, 225);">&#9711;</span>のターン</p>';
 	} else if (flag == false) {
-		playerBoard.innerHTML = '<p><span style="color: red;">&times;</span>のターン</p>'
+		playerBoard.innerHTML = '<p><span style="color: rgb(225, 65, 94);">&times;</span>のターン</p>';
+	}
+}
+
+function hamburgerMenu() {
+	if (menu.style.right == '20px') {
+		menu.style.right = '-80px'
+		icon.setAttribute('class', 'fa fa-bars');					
+	} else {
+		menu.style.right = '20px'
+		icon.setAttribute('class', 'fa fa-times');
 	}
 }

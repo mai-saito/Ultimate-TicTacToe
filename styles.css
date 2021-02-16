@@ -22,6 +22,7 @@ button {
 
 body {
 	font: 1.6rem "KosugiMaru","Kosugi", "Roboto", "sans-serif";
+	color: rgb(36, 37, 38);
 }
 
 #wrapper {
@@ -33,7 +34,7 @@ body {
 
 header {
 	width: 100vw;
-	padding: 1rem;
+	padding: 10px 20px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -43,18 +44,10 @@ header h1 {
 	font-family: "Roboto", "sans-serif";
 }
 
-header ul {
-	display: flex;
-}
-
 header ul li {
-	margin-right: 1rem;
+	/* margin-right: 1rem; */
 	display: none;
 	cursor: pointer;
-}
-
-header ul li:last-child {
-	margin-right: 0;
 }
 
 header ul li:hover {
@@ -77,13 +70,13 @@ main .box {
 	padding: 5px;
 	color: white;
 	font-weight: bold;
-	border: 1px solid rgb(128, 128, 128);
+	border: 1px solid rgb(116, 116, 116);
 	cursor: pointer;
 	font: 3rem;
 }
 
 main .box:hover {
-	background-color: rgb(128, 128, 128);
+	background-color: rgb(116, 116, 116);
 }
 
 .boxRow {
@@ -100,7 +93,7 @@ main .box:hover {
 .block p {
 	width: fit-content;
 	margin: auto auto;
-	color: white;
+	color: rgb(253, 253, 253);
 	font-size: 100px;
 }
 
@@ -115,6 +108,7 @@ main .box:hover {
 
 .active-all {
 	display: flex;
+	border: 3px solid rgb(201, 232, 246);
 }
 
 /*** Modal ***/
@@ -137,8 +131,8 @@ main .box:hover {
 	padding: 20px;
 	/* display: flex;
 	flex-direction: row-reverse; */
-	border: 1px solid rgb(128, 128, 128);
-	background-color: rgb(254, 254, 254);
+	border: 1px solid rgb(116, 116, 116);
+	background-color: rgb(253, 253, 253);
 }
 
 .modal-content h1 {
@@ -163,7 +157,7 @@ main .box:hover {
 	padding: 10px;
 	border-radius: 5px;
 	border: none;
-	color: white;
+	color: rgb(253, 253, 253);
 	background-color: rgb(65, 174, 225);
 	text-align: center;
 	font-family: "Kosugi", "sans-serif";
@@ -180,5 +174,56 @@ main .box:hover {
 }
 
 .close:hover {
-	color: rgb(247, 77, 77)
+	color: rgb(225, 65, 94);
+}
+
+/*** Responsive ***/
+
+@media screen and (min-width: 650px) {
+	header #icon {
+		display: none;
+	}
+
+	header ul {
+		display: flex;
+	}
+
+	header ul li {
+		margin-right: 10px;
+	}
+
+	header ul li:last-child {
+		margin-right: 0;
+	}
+}
+
+@media screen and (max-width: 649px) {
+	header #icon {
+		display: block;
+		position: absolute;
+		top: 25px;
+		right: 20px;
+		z-index: 2;
+	}
+
+	header #icon:hover {
+		cursor: pointer;
+	}
+
+	header nav ul {
+		width: fit-content;
+		display: block;
+		padding-top: 70px;
+		position: absolute;
+		top: 0;
+		right: -80px;
+		text-align: right;
+		z-index: 1;
+		transition: 0.7s;
+	}
+
+	header nav li {
+		margin: 0 0 15px;
+		z-index: 1;
+	}
 }
